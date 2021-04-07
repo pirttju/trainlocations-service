@@ -1,0 +1,25 @@
+{
+  "name": "trainlocations-service",
+  "version": "0.2.0",
+  "description": "trainlocations-service",
+  "main": "index.js",
+  "dependencies": {
+    "bluebird": "^3.7.2",
+    "dotenv": "^8.2.0",
+    "mqtt": "^4.2.6",
+    "needle": "^2.6.0",
+    "node-cache": "^5.1.2",
+    "pg-monitor": "^1.4.1",
+    "pg-promise": "^10.9.5",
+    "ws": "^7.4.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "start:dev": "NODE_ENV=development node index.js"
+  },
+  "author": "Juhani Pirttilahti",
+  "license": "MIT",
+  "repository": {}
+}
