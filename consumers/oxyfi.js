@@ -4,8 +4,9 @@ const {db, pgp} = require('../db');
 
 function convertDMSToDD(d, m) {
   const days = +d;
-  const minutes = parseFloat(m);
   if (days === 'NaN') return null;
+
+  const minutes = parseFloat(m);
 
   var dd = days + minutes / 60;
   return dd;
@@ -66,14 +67,14 @@ class Oxyfi {
 
     const trainData = data[16].split(';')[0];
 
-    let tn = trainData.split('.')[0];
+    const tn = trainData.split('.')[0];
     const trainNumber = Boolean(tn) ? tn : null;
 
-    let dd = trainData.split('@')[1];
+    const dd = trainData.split('@')[1];
     const departureDate = Boolean(dd) ? dd : null;
 
-    const speed = ~~(+data[7]);
-    const bearing = ~~(+data[8]);
+    const speed = +data[7];
+    const bearing = +data[8];
 
     const latitude = convertDMSToDD(data[3].substring(0, 2), data[3].substring(2));
     const longitude = convertDMSToDD(data[5].substring(0, 3), data[5].substring(3));

@@ -22,7 +22,7 @@ class STPoint {
       this.y = y;
       this.rawType = true;
   }
-  
+
   toPostgres(self) {
       return pgp.as.format('ST_SetSRID(ST_MakePoint($1, $2), 4326)', [this.x, this.y]);
   }
@@ -32,10 +32,12 @@ class Digitraffic {
   constructor(url) {
     this.url = url;
     this.client = null;
+    this.ttl = 10 * 60 * 1000;
+    this.timer = setTimeout(this.onLoop.bind(this), this.ttl);
   }
 
   onMessage(data) {
-    if (data.location) {
+    if (data.location && data.location.coordinates) {
       const id = (`10${data.departureDate}${data.trainNumber}`).replace(/\D+/g, '');
       const geom = new STPoint(data.location.coordinates[0], data.location.coordinates[1]);
 
@@ -52,6 +54,14 @@ class Digitraffic {
         'timestamp': data.timestamp
       });
     }
+  }
+
+  onLoop() {
+    clearTimeout(this.timer);
+    this.timer = setTimeout(this.onLoop.bind(this), this.ttl);
+
+    // Remove old records periodically
+    return db.trainLocations.removeOldKuplas();
   }
 
   onConnected() {
