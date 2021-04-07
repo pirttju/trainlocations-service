@@ -39,7 +39,7 @@ class TrainLocationsRepository {
   async removeOldKuplas() {
     return this.db.result(
       "DELETE FROM trainlocations WHERE data_source = 'KUPLA' AND timestamp < NOW() - INTERVAL '10 MINUTES'",
-      [id], r => r.rowCount);
+      [], r => r.rowCount);
   }
 
   async delete(id) {
