@@ -58,6 +58,9 @@ class Oxyfi {
     // Quick and dirty parser for NMEA v2.2 string
     const data = String(csv).split(',');
 
+    // Block some non-rail vehicles
+    if (this.blacklist.hasOwnProperty(data[14])) return;
+
     // Check for offline sensors or missing coordinates
     if (data[2] !== 'A' || +data[3] === 0 || +data[5] === 0) return;
 
@@ -77,9 +80,6 @@ class Oxyfi {
 
     const geom = new STPoint(longitude, latitude);
 
-    // Block some non-rail vehicles
-    if (this.blacklist.hasOwnProperty(data[14])) return;
-
     const vehicleId = this.getVehicle(data[14]);
     const id = (`70${vehicleId}`).replace(/\D+/g, '');
 
@@ -95,7 +95,7 @@ class Oxyfi {
     }
 
     const timestamp = new Date(Date.UTC(
-      +'20' + datePart.substring(4, 6),
+      +('20' + datePart.substring(4, 6)),
       (+datePart.substring(2, 4)) - 1,
       +datePart.substring(0, 2),
       +timePart.substring(0, 2),
