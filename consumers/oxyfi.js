@@ -82,7 +82,7 @@ class Oxyfi {
     const geom = new STPoint(longitude, latitude);
 
     const vehicleId = this.getVehicle(data[14]);
-    const id = (`70${vehicleId}`).replace(/\D+/g, '');
+    const id = (`74${vehicleId}`).replace(/\D+/g, '');
 
     // Parse time and date
     const rawTime = data[1].split('.');
