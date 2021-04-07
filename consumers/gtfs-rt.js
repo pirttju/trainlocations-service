@@ -61,7 +61,6 @@ class GtfsRealtime {
       if (
         !(
           vehicleId.startsWith('903100590146') ||
-          vehicleId.startsWith('90310129999') ||
           vehicleId.startsWith('903101208') ||
           vehicleId.startsWith('X')
         )
