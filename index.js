@@ -29,8 +29,8 @@ function run() {
   const skane = new Skanetrafiken(`https://opendata.samtrafiken.se/gtfs-rt/skane/VehiclePositions.pb?key=${process.env.GTFS_RT_API_KEY}`);
   skane.start();
 
-  // Set Cleaner to work every 10 minutes
-  const cleaner = new Cleaner(600000);
+  // Set Cleaner to work every 5 minutes
+  const cleaner = new Cleaner(300000);
   cleaner.run(); // run run run
 }
 

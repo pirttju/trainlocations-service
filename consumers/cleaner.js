@@ -2,7 +2,7 @@ const {db, pgp} = require('../db');
 
 class Cleaner {
   constructor(ttl) {
-    this.ttl = ttl || 600000;
+    this.ttl = ttl;
     this.timer = null;
   }
 
