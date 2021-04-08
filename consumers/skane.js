@@ -34,58 +34,46 @@ class STPoint {
   }
 }
 
-class GtfsRealtime {
-  constructor(url, vehicles, blacklist, dataSource) {
+class Skanetrafiken {
+  constructor(url) {
     this.url = url;
-    this.vehicles = vehicles;
-    this.blacklist = blacklist;
-    this.dataSource = dataSource;
     this.resolution = 45000;
     this.timer = null;
-  }
-
-  getVehicle(id) {
-    if (this.vehicles.hasOwnProperty(id)) {
-      return this.vehicles[id];
-    } else {
-      return id;
-    }
+    this.dataSource = 'SKANE';
   }
 
   onMessage(data) {
     if (data.vehicle && data.vehicle.position && data.vehicle.timestamp) {
-      // vehicle id
-      const vehicleId = this.getVehicle(data.vehicle.vehicle.id);
+      // the vehicle id is really combination of route id and train number
+      const vehicleId = data.vehicle.vehicle.id;
 
-      // dirty filter other than rail-vehicles
+      // dirty filter other than Öresundståg/Pågatåg routes
       if (
         !(
-          vehicleId.startsWith('903100590146') ||
-          vehicleId.startsWith('903101208') ||
-          vehicleId.startsWith('X')
+          vehicleId.startsWith('9031012080') ||
+          vehicleId.startsWith('9031012081') ||
+          vehicleId.startsWith('9031012082')
         )
       ) return;
 
-      const id = (`74${vehicleId}`).replace(/\D+/g, '');
+      const departureDate = new Date().toISOString().slice(0, 10); // FIXME not always correct
+      const trainNumber = +(vehicleId.substr(vehicleId.length - 5));
+
+      const id = (`74${departureDate}${trainNumber}`).replace(/\D+/g, '');
 
       const geom = new STPoint(data.vehicle.position.longitude, data.vehicle.position.latitude);
       const timestamp = new Date(data.vehicle.timestamp.low * 1000);
 
-      let tripId = null;
-      if (data.vehicle.trip) {
-        tripId = data.vehicle.trip.tripId;
-      }
-
       return db.trainLocations.upsert({
         'id': id,
-        'description': `(${vehicleId})`,
-        'train_number': tripId,
-        'departure_date': null,
-        'vehicle_id': vehicleId,
-        'speed': +data.vehicle.position.speed,
-        'bearing': +data.vehicle.position.bearing,
+        'description': trainNumber,
+        'train_number': trainNumber,
+        'departure_date': departureDate,
+        'vehicle_id': null,
+        'speed': data.vehicle.position.speed,
+        'bearing': data.vehicle.position.bearing,
         'geom': geom,
-        'data_source': this.dataSource,
+        'data_source': 'SKANE',
         'timestamp': timestamp
       });
     }
@@ -118,4 +106,4 @@ class GtfsRealtime {
   }
 }
 
-module.exports = GtfsRealtime;
+module.exports = Skanetrafiken;

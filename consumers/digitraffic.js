@@ -32,8 +32,7 @@ class Digitraffic {
   constructor(url) {
     this.url = url;
     this.client = null;
-    this.ttl = 10 * 60 * 1000;
-    this.timer = setTimeout(this.onLoop.bind(this), this.ttl);
+    this.dataSource = 'KUPLA';
   }
 
   onMessage(data) {
@@ -50,18 +49,10 @@ class Digitraffic {
         'speed': parseInt(data.speed),
         'bearing': 0,
         'geom': geom,
-        'data_source': 'KUPLA',
+        'data_source': this.dataSource,
         'timestamp': data.timestamp
       });
     }
-  }
-
-  onLoop() {
-    clearTimeout(this.timer);
-    this.timer = setTimeout(this.onLoop.bind(this), this.ttl);
-
-    // Remove old records periodically
-    return db.trainLocations.removeOldKuplas();
   }
 
   onConnected() {
