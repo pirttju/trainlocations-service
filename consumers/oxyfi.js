@@ -3,8 +3,8 @@ const WebSocket = require('ws');
 const {db, pgp} = require('../db');
 
 function convertDMSToDD(d, m) {
-  const days = +d;
-  if (days === 'NaN') return null;
+  const days = parseInt(d);
+  if (Number.isNaN(days)) return null;
 
   const minutes = parseFloat(m);
 
@@ -42,7 +42,7 @@ class Oxyfi {
     this.ws = null;
     this.vehicles = vehicles;
     this.blacklist = blacklist;
-    this.resolution = 5000;
+    this.resolution = 3000;
     this.timer = null;
     this.messages = {};
   }
