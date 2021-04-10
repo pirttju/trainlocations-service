@@ -65,15 +65,20 @@ class Oxyfi {
     // Check for offline sensors or missing coordinates
     if (data[2] !== 'A' || +data[3] === 0 || +data[5] === 0) return;
 
-    const trainData = data[16].split(';')[0];
+    // Parse train number
+    let tn, dd;
 
-    const tn = trainData.split('.')[0];
+    if (data[16]) {
+      const trainData = data[16].split(';')[0];
+
+      tn = trainData.split('.')[0];
+      dd = trainData.split('@')[1];
+    }
+
     const trainNumber = Boolean(tn) ? tn : null;
-
-    const dd = trainData.split('@')[1];
     const departureDate = Boolean(dd) ? dd : null;
 
-    const speed = +data[7];
+    const speed = data[7] * 1.852; // convert from knots
     const bearing = +data[8];
 
     const latitude = convertDMSToDD(data[3].substring(0, 2), data[3].substring(2));
