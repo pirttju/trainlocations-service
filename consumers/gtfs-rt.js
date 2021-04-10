@@ -61,7 +61,6 @@ class GtfsRealtime {
       if (
         !(
           vehicleId.startsWith('903100590146') ||
-          vehicleId.startsWith('903101208') ||
           vehicleId.startsWith('X')
         )
       ) return;
@@ -76,14 +75,17 @@ class GtfsRealtime {
         tripId = data.vehicle.trip.tripId;
       }
 
+      const speed = data.vehicle.position.speed * 3.6;
+      const bearing = data.vehicle.position.bearing;
+
       return db.trainLocations.upsert({
         'id': id,
         'description': `(${vehicleId})`,
-        'train_number': tripId,
+        'train_number': null,
         'departure_date': null,
         'vehicle_id': vehicleId,
-        'speed': +data.vehicle.position.speed,
-        'bearing': +data.vehicle.position.bearing,
+        'speed': speed,
+        'bearing': bearing,
         'geom': geom,
         'data_source': this.dataSource,
         'timestamp': timestamp

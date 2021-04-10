@@ -113,7 +113,7 @@ class Oxyfi {
     const msg = {
       'id': id,
       'description': trainNumber ? trainNumber : `(${vehicleId})`,
-      'train_number': trainNumber,
+      'train_number': +trainNumber,
       'departure_date': departureDate,
       'vehicle_id': vehicleId,
       'speed': speed,

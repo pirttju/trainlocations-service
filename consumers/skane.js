@@ -64,14 +64,17 @@ class Skanetrafiken {
       const geom = new STPoint(data.vehicle.position.longitude, data.vehicle.position.latitude);
       const timestamp = new Date(data.vehicle.timestamp.low * 1000);
 
+      const speed = data.vehicle.position.speed * 3.6;
+      const bearing = data.vehicle.position.bearing;
+
       return db.trainLocations.upsert({
         'id': id,
         'description': trainNumber,
         'train_number': trainNumber,
         'departure_date': departureDate,
         'vehicle_id': null,
-        'speed': data.vehicle.position.speed,
-        'bearing': data.vehicle.position.bearing,
+        'speed': speed,
+        'bearing': bearing,
         'geom': geom,
         'data_source': 'SKANE',
         'timestamp': timestamp
