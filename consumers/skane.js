@@ -37,7 +37,7 @@ class STPoint {
 class Skanetrafiken {
   constructor(url) {
     this.url = url;
-    this.resolution = 45000;
+    this.resolution = 90000;
     this.timer = null;
     this.dataSource = 'SKANE';
   }
