@@ -26,8 +26,8 @@ function run() {
   otraf.start();
 
   // Skånetrafiken (GTFS-RT but with train numbers as vehicle id)
-  const skane = new Skanetrafiken(`https://opendata.samtrafiken.se/gtfs-rt/skane/VehiclePositions.pb?key=${process.env.GTFS_RT_API_KEY}`);
-  skane.start();
+  //const skane = new Skanetrafiken(`https://opendata.samtrafiken.se/gtfs-rt/skane/VehiclePositions.pb?key=${process.env.GTFS_RT_API_KEY}`);
+  //skane.start();
 
   // Set Cleaner to work every 5 minutes
   const cleaner = new Cleaner(300000);
