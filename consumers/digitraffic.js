@@ -56,15 +56,8 @@ class Digitraffic {
   }
 
   onConnected() {
-    console.log(`[Digitraffic] Subscribe topic train-locations/#`);
-    this.client.subscribe('train-locations/#', (error) => {
-      if (error) {
-        console.log(`[Digitraffic] MQTT error: ${error}`);
-        return;
-      }
-
-      console.log(`[Digitraffic] Connection established`);
-    });
+    console.log(`[Digitraffic] Connected`);
+    this.client.subscribe('train-locations/#');
   }
 
   connect() {
@@ -72,6 +65,12 @@ class Digitraffic {
     this.client = mqtt.connect(this.url);
 
     this.client.on('connect', () => this.onConnected());
+
+    this.client.on('close', () => console.log('[Digitraffic] Disconnected'));
+
+    this.client.on('reconnect', () => console.log('[Digitraffic] Reconnecting...'));
+
+    this.client.on('error', error => console.log(`[Digitraffic] Error: ${error}`));
 
     this.client.on('message', (topic, payload) => {
       let json = {};

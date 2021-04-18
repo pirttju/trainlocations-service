@@ -128,7 +128,6 @@ class Oxyfi {
   }
 
   onLoop() {
-    // Runs upsert periodically
     upsert(Object.values(this.messages));
 
     clearTimeout(this.timer);
@@ -141,9 +140,6 @@ class Oxyfi {
 
     this.ws.on('open', () => {
       console.log(`[Oxyfi] Connection established.`);
-      // Start timer
-      clearTimeout(this.timer);
-      this.timer = setTimeout(this.onLoop.bind(this), this.resolution);
     });
 
     this.ws.on('error', (error) => {
@@ -151,6 +147,10 @@ class Oxyfi {
     });
 
     this.ws.on('message', (data) => this.onMessage(data));
+
+    // Start timer
+    clearTimeout(this.timer);
+    this.timer = setTimeout(this.onLoop.bind(this), this.resolution);
   }
 }
 
