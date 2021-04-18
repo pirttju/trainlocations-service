@@ -68,14 +68,15 @@ class HSL {
     if (data.VP && data.VP.long && data.VP.lat) {
       const id = parseInt(`99${data.VP.oper}${data.VP.veh}`);
       const geom = new STPoint(data.VP.long, data.VP.lat);
-  
+      const speed = parseFloat(data.VP.spd) * 3.6;
+
       const msg = {
         'id': id,
         'description': data.VP.desi,
         'train_number': data.VP.jrn,
         'departure_date': data.VP.oday,
         'vehicle_id': data.VP.veh,
-        'speed': data.VP.spd,
+        'speed': speed,
         'bearing': data.VP.hdg,
         'geom': geom,
         'data_source': 'OXYFI',
