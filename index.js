@@ -1,6 +1,7 @@
 const dotenv = require('dotenv').config();
 
 const Digitraffic = require('./consumers/digitraffic');
+const HSL = require('./consumers/hsl');
 const Oxyfi = require('./consumers/oxyfi');
 const GtfsRealtime = require('./consumers/gtfs-rt');
 const Skanetrafiken = require('./consumers/skane');
@@ -16,6 +17,9 @@ function run() {
   const digitraffic = new Digitraffic('mqtt://rata-mqtt.digitraffic.fi');
   digitraffic.connect();
 
+  const hsl = new HSL('mqtt://mqtt.hsl.fi:1883');
+  hsl.connect();
+
   const oxyfi = new Oxyfi(`wss://api.oxyfi.com/trainpos/listen?v=1&key=${process.env.OXYFI_API_KEY}`,
     vehicles, blacklist);
   oxyfi.connect();
@@ -26,8 +30,8 @@ function run() {
   otraf.start();
 
   // Skånetrafiken (GTFS-RT but with train numbers as vehicle id)
-  //const skane = new Skanetrafiken(`https://opendata.samtrafiken.se/gtfs-rt/skane/VehiclePositions.pb?key=${process.env.GTFS_RT_API_KEY}`);
-  //skane.start();
+  const skane = new Skanetrafiken(`https://opendata.samtrafiken.se/gtfs-rt/skane/VehiclePositions.pb?key=${process.env.GTFS_RT_API_KEY}`);
+  skane.start();
 
   // Set Cleaner to work every 5 minutes
   const cleaner = new Cleaner(300000);

@@ -37,7 +37,7 @@ class STPoint {
 class Skanetrafiken {
   constructor(url) {
     this.url = url;
-    this.resolution = 90000;
+    this.resolution = 120000;
     this.timer = null;
     this.dataSource = 'SKANE';
   }
@@ -47,7 +47,7 @@ class Skanetrafiken {
       // the vehicle id is really combination of route id and train number
       const vehicleId = data.vehicle.vehicle.id;
 
-      // dirty filter other than Öresundståg/Pågatåg routes
+      // dirty filter only Öresundståg/Pågatåg routes
       if (
         !(
           vehicleId.startsWith('9031012080') ||

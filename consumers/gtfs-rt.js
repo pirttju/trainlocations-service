@@ -40,7 +40,7 @@ class GtfsRealtime {
     this.vehicles = vehicles;
     this.blacklist = blacklist;
     this.dataSource = dataSource;
-    this.resolution = 90000;
+    this.resolution = 120000;
     this.timer = null;
   }
 
