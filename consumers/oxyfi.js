@@ -45,6 +45,8 @@ class Oxyfi {
     this.resolution = 3000;
     this.timer = null;
     this.messages = {};
+    this.reconnectInterval = 60000;
+    this.reconnectTimer = null;
   }
 
   getVehicle(id) {
@@ -144,6 +146,13 @@ class Oxyfi {
 
     this.ws.on('error', (error) => {
       console.log(`[Oxyfi] WebSocket error: ${error}`);
+    });
+
+    // auto reconnect on close
+    this.ws.on('close', () => {
+      console.log('[Oxyfi] WebSocket closed. Reconnecting in 60 sec...');
+      clearTimeout(this.reconnectTimer);
+      this.reconnectTimer = setTimeout(this.connect.bind(this), this.reconnectInterval);
     });
 
     this.ws.on('message', (data) => this.onMessage(data));
