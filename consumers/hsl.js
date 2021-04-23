@@ -79,7 +79,7 @@ class HSL {
         'speed': speed,
         'bearing': data.VP.hdg,
         'geom': geom,
-        'data_source': 'OXYFI',
+        'data_source': 'HSL',
         'timestamp': data.VP.tst
       };
 
