@@ -35,12 +35,13 @@ class STPoint {
 }
 
 class GtfsRealtime {
-  constructor(url, vehicles, blacklist, dataSource) {
+  constructor(url, auth, vehicles, blacklist, dataSource) {
     this.url = url;
+    this.auth = auth;
     this.vehicles = vehicles;
     this.blacklist = blacklist;
     this.dataSource = dataSource;
-    this.resolution = 120000;
+    this.resolution = 5000;
     this.timer = null;
   }
 
@@ -65,7 +66,7 @@ class GtfsRealtime {
         )
       ) return;
 
-      const id = (`74${vehicleId}`).replace(/\D+/g, '');
+      const id = (`9999${vehicleId}`).replace(/\D+/g, '');
 
       const geom = new STPoint(data.vehicle.position.longitude, data.vehicle.position.latitude);
       const timestamp = new Date(data.vehicle.timestamp.low * 1000);
@@ -94,7 +95,13 @@ class GtfsRealtime {
   }
 
   onLoop() {
-    needle('get', this.url, { compressed: true })
+    let headers = {};
+    if (this.auth) {
+      headers = {
+        'Authorization' : `Basic ${this.auth}`
+      }
+    }
+    needle('get', this.url, { headers: headers, compressed: true })
     .then((response) => {
       const feed = GtfsRealtimeBindings.transit_realtime.FeedMessage.decode(response.body);
 

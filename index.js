@@ -24,14 +24,22 @@ function run() {
     vehicles, blacklist);
   oxyfi.connect();
 
+  const nysse = new GtfsRealtime(
+    'https://data.waltti.fi/tampere/api/gtfsrealtime/v1.0/feed/vehicleposition',
+    process.env.WALTTI_API_KEY,
+    {},
+    {},
+    'NYSSE');
+  nysse.start();
+
   // Östgötatrafiken GTFS-RT
-  const otraf = new GtfsRealtime(`https://opendata.samtrafiken.se/gtfs-rt/otraf/VehiclePositions.pb?key=${process.env.GTFS_RT_API_KEY}`,
-    vehicles, blacklist, 'OTRAF');
-  otraf.start();
+  //const otraf = new GtfsRealtime(`https://opendata.samtrafiken.se/gtfs-rt/otraf/VehiclePositions.pb?key=${process.env.GTFS_RT_API_KEY}`,
+  //  null, vehicles, blacklist, 'OTRAF');
+  //otraf.start();
 
   // Skånetrafiken (GTFS-RT but with train numbers as vehicle id)
-  const skane = new Skanetrafiken(`https://opendata.samtrafiken.se/gtfs-rt/skane/VehiclePositions.pb?key=${process.env.GTFS_RT_API_KEY}`);
-  skane.start();
+  //const skane = new Skanetrafiken(`https://opendata.samtrafiken.se/gtfs-rt/skane/VehiclePositions.pb?key=${process.env.GTFS_RT_API_KEY}`);
+  //skane.start();
 
   // Set Cleaner to work every 5 minutes
   const cleaner = new Cleaner(300000);

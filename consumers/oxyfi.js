@@ -61,6 +61,9 @@ class Oxyfi {
     // Quick and dirty parser for NMEA v2.2 string
     const data = String(csv).split(',');
 
+    // Check for vehicle description
+    if (!data[14]) return;
+
     // Block some non-rail vehicles
     if (this.blacklist.hasOwnProperty(data[14])) return;
 
@@ -85,6 +88,8 @@ class Oxyfi {
 
     const latitude = convertDMSToDD(data[3].substring(0, 2), data[3].substring(2));
     const longitude = convertDMSToDD(data[5].substring(0, 3), data[5].substring(3));
+
+    if (Number.isNaN(latitude) || Number.isNaN(longitude)) return;
 
     const geom = new STPoint(longitude, latitude);
 
