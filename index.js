@@ -27,7 +27,7 @@ function run() {
   const nysse = new GtfsRealtime(
     'https://data.waltti.fi/tampere/api/gtfsrealtime/v1.0/feed/vehicleposition',
     process.env.WALTTI_API_KEY,
-    {},
+    vehicles,
     {},
     'NYSSE');
   nysse.start();

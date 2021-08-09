@@ -54,35 +54,48 @@ class GtfsRealtime {
   }
 
   onMessage(data) {
-    if (data.vehicle && data.vehicle.position && data.vehicle.timestamp) {
+    if (data.vehicle && data.vehicle.position && data.vehicle.timestamp && data.vehicle.vehicle) {
       // vehicle id
       const vehicleId = this.getVehicle(data.vehicle.vehicle.id);
 
-      // dirty filter other than rail-vehicles
+      // dirty filter to show rail-vehicles only
       if (
         !(
-          vehicleId.startsWith('903100590146') ||
-          vehicleId.startsWith('X')
+          data.vehicle.vehicle.id.startsWith('903100590146') ||
+          vehicleId !== data.vehicle.vehicle.id
         )
       ) return;
 
-      const id = (`9999${vehicleId}`).replace(/\D+/g, '');
+      const id = (`9999${data.vehicle.vehicle.id}`).replace(/\D+/g, '');
 
       const geom = new STPoint(data.vehicle.position.longitude, data.vehicle.position.latitude);
       const timestamp = new Date(data.vehicle.timestamp.low * 1000);
 
+      let description = `(${vehicleId})`;
+
       let tripId = null;
       if (data.vehicle.trip) {
         tripId = data.vehicle.trip.tripId;
+
+        if (data.vehicle.trip.routeId) {
+          description = data.vehicle.trip.routeId;
+        }
+      }
+
+      if (this.dataSource === 'NYSSE') {
+        description = description.replace('56920', '');
+        if (data.vehicle.vehicle.label) {
+          description += ' ' + data.vehicle.vehicle.label;
+        }
       }
 
       const speed = data.vehicle.position.speed * 3.6;
-      const bearing = data.vehicle.position.bearing;
+      const bearing = data.vehicle.position.bearing;      
 
       return db.trainLocations.upsert({
         'id': id,
-        'description': `(${vehicleId})`,
-        'train_number': null,
+        'description': description,
+        'train_number': tripId,
         'departure_date': null,
         'vehicle_id': vehicleId,
         'speed': speed,
