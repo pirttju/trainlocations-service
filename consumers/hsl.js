@@ -76,7 +76,7 @@ class HSL {
         'train_number': data.VP.jrn,
         'departure_date': data.VP.oday,
         'vehicle_id': data.VP.veh,
-        'speed': speed,
+        'speed': Number.isNaN(speed) ? null : speed,
         'bearing': data.VP.hdg,
         'geom': geom,
         'data_source': 'HSL',
