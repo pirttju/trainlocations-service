@@ -12,6 +12,35 @@ CREATE TABLE trainlocations (
   timestamp       timestamptz DEFAULT CURRENT_TIMESTAMP
 );
 
+
+CREATE OR REPLACE FUNCTION train_category(train_type text) RETURNS text AS
+$$
+BEGIN
+    CASE
+        WHEN train_type IN ('VET', 'VEV', 'VLI') THEN
+            RETURN 'loco';
+        WHEN train_type IN ('MUS', 'MUV', 'V') THEN
+            RETURN 'regional';
+        WHEN train_type IN ('MV', 'SAA', 'HV', 'W') THEN
+            RETURN 'ecs';
+        WHEN train_type IN ('H', 'HDM', 'HSM') THEN
+            RETURN 'regional';
+        WHEN train_type IN ('TYO', 'LIV') THEN
+            RETURN 'work';
+        WHEN train_type IN ('T', 'RJ', 'PAI', 'PAR') THEN
+            RETURN 'freight';
+        WHEN train_type IN ('P', 'PYO', 'IC', 'IC2', 'S', 'AE', 'PVS', 'PVV') THEN
+            RETURN 'intercity';
+        WHEN train_type IN ('HL', 'HLV') THEN
+            RETURN 'regional';
+        ELSE
+            RETURN 'other';
+    END CASE;
+END;
+$$
+LANGUAGE plpgsql;
+
+
 -- Bearing is not supplied from Kupla (Digitraffic) so we have to calculate it from coords
 CREATE OR REPLACE FUNCTION trainlocations_set_bearing() RETURNS TRIGGER AS
 $$
