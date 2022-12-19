@@ -6,6 +6,7 @@
   "dependencies": {
     "bluebird": "^3.7.2",
     "dotenv": "^8.2.0",
+    "gtfs-realtime-bindings": "^0.0.6",
     "mqtt": "^4.2.6",
     "needle": "^2.6.0",
     "node-cache": "^5.1.2",
@@ -13,7 +14,6 @@
     "pg-promise": "^10.9.5",
     "ws": "^7.4.4"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
