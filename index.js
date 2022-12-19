@@ -21,14 +21,12 @@ function run() {
   const hsl = new HSL("mqtt://mqtt.hsl.fi:1883");
   hsl.connect();
 
-  /*
   const oxyfi = new Oxyfi(
     `wss://api.oxyfi.com/trainpos/listen?v=1&key=${process.env.OXYFI_API_KEY}`,
     vehicles,
     blacklist
   );
   oxyfi.connect();
-  */
 
   const nysse = new GtfsRealtime(
     "https://data.waltti.fi/tampere/api/gtfsrealtime/v1.0/feed/vehicleposition",
