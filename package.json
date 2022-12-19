@@ -5,14 +5,14 @@
   "main": "index.js",
   "dependencies": {
     "bluebird": "^3.7.2",
-    "dotenv": "^8.2.0",
+    "dotenv": "^16.0.3",
     "gtfs-realtime-bindings": "^0.0.6",
-    "mqtt": "^4.2.6",
-    "needle": "^2.6.0",
+    "mqtt": "^4.3.7",
+    "needle": "^3.2.0",
     "node-cache": "^5.1.2",
-    "pg-monitor": "^1.4.1",
-    "pg-promise": "^10.9.5",
-    "ws": "^7.4.4"
+    "pg-monitor": "^1.5.0",
+    "pg-promise": "^10.15.4",
+    "ws": "^8.11.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
