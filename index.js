@@ -56,6 +56,7 @@ function run() {
   // Set Cleaner to work every 5 minutes
   const cleaner = new Cleaner(300000);
   cleaner.run(); // run run run
+  // THIS DOES NOT REALLY WORK, F-WORD! WHY??
 }
 
 run();
