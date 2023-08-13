@@ -45,9 +45,9 @@ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION trainlocations_set_bearing() RETURNS TRIGGER AS
 $$
 BEGIN
-    IF (NEW."data_source" = 'KUPLA' AND ST_Equals(OLD.geom, NEW.geom)) THEN
+    IF (NEW."data_source" IN ('NROD', 'KUPLA') AND ST_Equals(OLD.geom, NEW.geom)) THEN
         NEW."bearing" := OLD."bearing";
-    ELSIF (NEW."data_source" = 'KUPLA') THEN
+    ELSIF (NEW."data_source" IN ('NROD', 'KUPLA')) THEN
         NEW."bearing" := round(ST_Azimuth(OLD."geom", NEW."geom")/(2*pi())*360);
     END IF;
     RETURN NEW;

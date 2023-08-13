@@ -1,5 +1,6 @@
 const dotenv = require("dotenv").config();
 
+const NROD = require("./consumers/nrod");
 const Digitraffic = require("./consumers/digitraffic");
 const HSL = require("./consumers/hsl");
 const Oxyfi = require("./consumers/oxyfi");
@@ -15,6 +16,9 @@ const blacklist = require("./blacklist.json");
 const vehicles = require("./vehicles.json");
 
 function run() {
+  const nrod = new NROD("mqtt://127.0.0.1:11883");
+  nrod.connect();
+
   const digitraffic = new Digitraffic("mqtt://rata-mqtt.digitraffic.fi");
   digitraffic.connect();
 
